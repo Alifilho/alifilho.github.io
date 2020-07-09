@@ -54,6 +54,7 @@
                                 <ul class="nav">
                                     <li><a href="#line3_1">Supervisionado e não supervisionado</a></li>
                                     <li><a href="#line3_2">Classificação e regressão</a></li>
+                                    <li><a href="#line3_3">KNN</a></li>
                                 </ul>
                             </li>
                             <li><a href="#line4">No Código</a>
@@ -61,6 +62,7 @@
                                     <li><a href="#line4_1">Modelos Lineares</a></li>
                                     <li><a href="#line4_2">Árvores de Decisão</a></li>
                                     <li><a href="#line4_3">Suporte e Confiança</a></li>
+                                    <li><a href="#line4_4">Análise KNN</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -199,6 +201,26 @@
                         <p>Mais informações <strong><a
                                     href="https://edisciplinas.usp.br/pluginfile.php/4125431/mod_resource/content/2/mineracaodadosbiologicos-parte5.pdf">aqui</a></strong>
                         </p>
+
+                        <hr>
+
+                        <h4 id="line3_3">KNN</h4>
+
+                        <p>KNN (k-Nearest Neighbor, k-Vizinho mais próximo) é um algorítimo não pramétrico, a estrutura
+                            do modelo sera determinada pelo dataset
+                            utilizado. Como faz parte dos <storng>algorítimos lentos</storng> ele não necessita de dados
+                            de treinamento para gerar o modelo, o que resulta em um treinamento muito rápido e teste e
+                            validação lentos.
+                            Imagine um gráfico de altura e peso de um animal, e existem seis dados alguns com mais
+                            altura e peso, e outros com menos altura e menos peso, nesse caso os dados com maiores pesos
+                            e alturas são de cavalos, e os de peso e altura menor, de cachorros, inserindo um dado numa
+                            parte mais baixa do gráfico com menos altura e peso o algorítimo ira identificar que o dado
+                            inserido é um cachorro, pois ele analisou seus vizinhos e viu que eram parecidos e que eram
+                            cachorros e não cavalos
+                        </p>
+
+                        <p>KNN costuma ser melhor quando utlizado em situações binárias onde so existem duas coisas a se
+                            classificar, uma coisa ou outra coisa, </p>
 
                     </section>
                     <section id="line4" class="section">
@@ -363,6 +385,50 @@
                         <img src="https://i.imgur.com/CRLxE2z.png" alt="exemplo">
 
                         <hr>
+
+                        <h4 id="line4_4">Análise KNN</h4>
+
+                        <pre class="brush: html; highlight: [2,4]">
+                            from sklearn.dataset import load_iris
+                            iris = load_iris()
+
+                            from sklearn.cross_validation import train_test_split
+                            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=4)
+
+                            from sklearn.neighbors import KNeighborsClassifier
+
+                            from sklearn import metrics
+
+                            k_range = range(1, 26)
+
+                            scores = {}
+
+                            scores_list = []
+
+                            for k in k_range:
+                                knn = KneighborsClassifier(n_neighbors=k)
+                                knn.fit(X_train, y_train)
+                                y_pred=knn.predict(X_test)
+                                scores[k] = metrics.accuracy_score(y_test, y_pred)
+                                scores_list.append(metrics.accuracy_score(y_test, y_pred))
+
+                                %matplotlib inline
+                                import matplotlib.pyplot as plt
+
+                                plt.plot(k_range, scores_list)
+                                plt.xlabel('Value of K for KNN')
+                                plt.ylabel('Testing Accuracy')
+                        </pre>
+
+                        <p>Resposta do código: Text(0, 0.5, 'Testing Accuracy')</p>
+
+                        <img src="./images/knn.png" alt="knn">
+
+                        <p>Inicialmente importamos o Iris Dataset com informações de plantas para análise e uma
+                            biblioteca do Scikit-Learn chamada Neighbors com o KNN, nesse caso ele esta análisando o
+                            tamanho de uma planta em um gráfico X e Y, onde X é a altura da planta e Y é a largura da
+                            planta, então o algorítimo tenta premeditar qual o tipo da planta, ele pega os três pontos
+                            mais próximos e determina qual é o tipo</p>
                     </section>
                 </div>
             </div>
